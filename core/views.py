@@ -13,7 +13,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import Entry, Expense, Member
 from .serializers import (
-    SignupSerializer, JoinCommitteeSerializer, LoginSerializer,
+    CommitteeIconUpdateSerializer, SignupSerializer, JoinCommitteeSerializer, LoginSerializer,
     ForgotPasswordSerializer, EntrySerializer, MemberMiniSerializer, SendSignupOtpSerializer,
     MemberDetailSerializer, CommitteeProfileSerializer, ProfilePictureUpdateSerializer,ExpenseSerializer,
 )
@@ -318,3 +318,21 @@ class ExpenseCategoryStatsView(APIView):
             }
             for row in breakdown
         ])
+
+
+
+class UpdateCommitteeIconView(generics.UpdateAPIView):
+    serializer_class = CommitteeIconUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_object(self):
+        return self.request.user.committee
+
+    def patch(self, request, *args, **kwargs):
+        if not request.user.is_admin:
+            return Response(
+                {'detail': 'Only the committee admin can change the group icon.'},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        return super().patch(request, *args, **kwargs)

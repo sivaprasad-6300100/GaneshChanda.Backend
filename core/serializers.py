@@ -191,12 +191,27 @@ class MemberDetailSerializer(serializers.ModelSerializer):
         return request.build_absolute_uri(url) if request else url
 
 
+class CommitteeIconUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Committee
+        fields = ['icon']
+
 class CommitteeProfileSerializer(serializers.ModelSerializer):
     members = MemberDetailSerializer(many=True, read_only=True)
+    icon =serializers.SerializerMethodField()
+
+
 
     class Meta:
         model = Committee
-        fields = ['id', 'name', 'code', 'is_paid', 'created_at', 'members']
+        fields = ['id', 'name', 'code', 'is_paid', 'icon','created_at', 'members']
+
+    def get_icon(self, obj):
+        if not obj.icon:
+            return None
+        request = self.context.get('request')
+        url = obj.icon.url
+        return request.build_absolute_uri(url) if request else url
 
 
 class ProfilePictureUpdateSerializer(serializers.ModelSerializer):

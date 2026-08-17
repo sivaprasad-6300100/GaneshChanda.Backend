@@ -9,11 +9,18 @@ from datetime import timedelta
 def generate_committee_code():
     return uuid.uuid4().hex[:8].upper()
 
+def committee_icon_path(instance, filename):
+    ext = filename.split('.')[-1]
+    return f'committee_icons/{instance.id}.{ext}'
+
+
+
 
 class Committee(models.Model):
     name = models.CharField(max_length=150)
     code = models.CharField(max_length=8, unique=True, default=generate_committee_code)
     is_paid = models.BooleanField(default=False)
+    icon = models.ImageField(upload_to=committee_icon_path, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

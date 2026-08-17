@@ -1,10 +1,11 @@
 from django.urls import path
+from rest_framework import views
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import (
     ExpenseCategoryStatsView, ExpenseDetailView, ExpenseListCreateView, MemberCollectionStatsView, ProfileView, RemoveMemberView, SendSignupOtpView, SignupView, JoinCommitteeView, LoginView, ForgotPasswordView,
     EntryListCreateView, EntryDetailView, CheckDuplicateView,
-    StatsView, MembersView, ExportCsvView, UpdateProfilePictureView,
+    StatsView, MembersView, ExportCsvView, UpdateProfilePictureView,UpdateCommitteeIconView
 )
 
 urlpatterns = [
@@ -27,5 +28,6 @@ urlpatterns = [
     path('expenses/<int:pk>/', ExpenseDetailView.as_view(), name='expense-detail'),
     path('expenses/by-category/', ExpenseCategoryStatsView.as_view(), name='expense-by-category'),
     path('members/<int:pk>/', RemoveMemberView.as_view(), name='remove-member'),    
+    path('committee/icon/', UpdateCommitteeIconView.as_view()),
     
 ]
