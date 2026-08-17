@@ -15,7 +15,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
@@ -54,7 +56,20 @@ TEMPLATES = [
 WSGI_APPLICATION = 'chanda_backend.wsgi.application'
 
 
+# ---- Media storage: Cloudinary ----
+# Uploaded files (e.g. committee icons) are stored on Cloudinary instead of
+# local disk, since Render's filesystem is ephemeral and wipes local uploads
+# on every restart/redeploy.
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
+# MEDIA_ROOT is no longer used for uploads once Cloudinary is the file
+# backend, but it's harmless to leave defined in case anything references it.
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DATABASES = {
