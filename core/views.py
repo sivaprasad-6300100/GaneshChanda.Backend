@@ -112,11 +112,6 @@ class EntryListCreateView(generics.ListCreateAPIView):
         if count >= FREE_LIMIT and not committee.is_paid:
             raise ValidationError({'detail': f'Free limit of {FREE_LIMIT} entries reached. Upgrade to add more.'})
         serializer.save(committee=committee, logged_by=self.request.user)
-        try:
-            from .sms import send_receipt_sms
-            send_receipt_sms(serializer.instance)
-        except Exception:
-            pass
 
 
 class EntryDetailView(generics.RetrieveUpdateDestroyAPIView):
