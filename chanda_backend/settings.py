@@ -9,14 +9,15 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-me')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',   # moved up, above cloudinary_storage
     'cloudinary_storage',
-    'django.contrib.staticfiles',
     'cloudinary',
     'rest_framework',
     'rest_framework_simplejwt',
